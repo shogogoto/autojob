@@ -1,15 +1,15 @@
-from contextlib import contextmanager
 from contextlib import ExitStack
 
 
 class Progress:
     def __init__(self, case):
-        self._case    = case
-        self._current = None 
-        self._processes = []
-        self._contexts  = []
-        self._stack = ExitStack()
-
+        self._case       = case
+        self._current    = None 
+        self._processes  = []
+        self._contexts   = []
+        self._extensions = []
+        self._stack      = ExitStack()
+        
     @property
     def case(self):
         return self._case
@@ -33,7 +33,8 @@ class Progress:
                 self._current = state
             self._processes.append(wrapper)
         return _add_proc
-
+    
+    # process関連の処理をProcessクラスへ分離すべきか
     def advance(self):
         for _ in iter(self._case):
             for i, proc in enumerate(self._processes):
@@ -43,3 +44,6 @@ class Progress:
                 proc(self)
             self._current = None
             self._stack.close()
+
+    def extend(self, extension):
+        self._extensions.append(extension)

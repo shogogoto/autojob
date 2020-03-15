@@ -33,12 +33,10 @@ class TestProgress(unittest.TestCase):
         @self.prog.add_proc(chdir, "proc1")
         def test_proc1(progress):
             progress.test_state = 0
-            print("proc1", os.getcwd())
             return "dummy_job", TestChecker()
         
         @self.prog.add_proc(chdir, "proc2")
         def test_proc2(progress):
-            print("prco2", os.getcwd())
             return "dummy_job", TestChecker()
 
     def test_n_proc(self):
